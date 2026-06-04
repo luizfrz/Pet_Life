@@ -108,35 +108,38 @@ fun Scheduling(navController: NavHostController) {
                     .padding(16.dp)
             )
             {
-                OutlinedTextField(
-                    value = textInput,
-                    onValueChange = { newText -> textInput = newText },
-                    label = { Text("Digite nome do medicamento", color = Color.White) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(110.dp)
-                        .padding(16.dp),
-
-                    shape = RoundedCornerShape(16.dp),
-
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Yellow,
-                        unfocusedBorderColor = Color.Gray,
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
-                        cursorColor = Color.Yellow,
-                        focusedContainerColor = Color(0xFF2D2D2D),
-                        unfocusedContainerColor = Color(0xFF2D2D2D)
-                    ),
-                    singleLine = true
-
-                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+
+                    OutlinedTextField(
+                        value = textInput,
+                        onValueChange = { textInput = it },
+                        label = {
+                            Text(
+                                "Digite nome do medicamento",
+                                color = Color.White
+                            )
+                        },
+                        modifier = Modifier
+                            .weight(1f) ,
+                        shape = RoundedCornerShape(16.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color.Yellow,
+                            unfocusedBorderColor = Color.Gray,
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            cursorColor = Color.Yellow,
+                            focusedContainerColor = Color(0xFF2D2D2D),
+                            unfocusedContainerColor = Color(0xFF2D2D2D)
+                        ),
+                        singleLine = true
+                    )
+
                     Button(
                         onClick = {
                             if (textInput.isNotBlank()) {
@@ -144,52 +147,16 @@ fun Scheduling(navController: NavHostController) {
                                 textInput = ""
                             }
                         },
+                        modifier = Modifier.height(56.dp),
+                        shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF2D6498),
                             contentColor = Color.White
                         )
                     ) {
-                        Text(
-                            text = "Adicionar ",
-                            textAlign = TextAlign.Center,
-                            style = TextStyle(
-                                fontFamily = FontFamily.Serif,
-                                fontWeight = FontWeight.Bold,
-                            ),
-                            fontSize = 14.sp,
-                            modifier = Modifier
-                                .fillMaxWidth(0.3f)
-                                .height(20.dp)
-                                .width(10.dp)
-                                .padding(bottom = 5.dp)
-                        )
+                        Text("Adicionar")
                     }
-//                    Button(
-//                        onClick = {
-//                            addTask.clear()
-//                        },
-//                        colors = ButtonDefaults.buttonColors(
-//                            containerColor = Color(0xFF2D6498),
-//                            contentColor = Color.White
-//                        ),
-////                    ) {
-////                        Text(
-////                            text = "Limpar Tudo ",
-////                            textAlign = TextAlign.Center,
-////                            style = TextStyle(
-////                                fontFamily = FontFamily.Serif,
-////                                fontWeight = FontWeight.Bold,
-////                            ),
-////                            fontSize = 14.sp,
-////                            modifier = Modifier
-////                                .fillMaxWidth()
-////                                .height(IntrinsicSize.Min)
-////                                .width(10.dp)
-////                                .padding(bottom = 5.dp)
-////                        )
-////                    }
-//                }
-//            }
+                }
                     Spacer(
                         modifier = Modifier
                             .height(24.dp)
@@ -237,5 +204,4 @@ fun Scheduling(navController: NavHostController) {
             }
         }
     }
-}
 

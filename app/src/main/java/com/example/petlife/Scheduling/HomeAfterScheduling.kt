@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -26,7 +27,7 @@ import androidx.navigation.NavHostController
 fun HomeAfterScheduling(navController: NavHostController) {
     Box(
         modifier = Modifier
-            .background(Color(0xFFF3978F6))
+            .background(Color(0xFFF0F4BB4))
     ){
 //        Image(
 //            painter = painterResource(id = R.drawable.image),
@@ -47,6 +48,11 @@ fun HomeAfterScheduling(navController: NavHostController) {
                 onClick = {
                     navController.navigate("Scheduling")
                 },
+                modifier = Modifier
+                    .width(300.dp) // Define a largura exata
+                    .height(80.dp) // Define a altura exata)
+                    .fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFF2D6498),
                     contentColor = Color.White
@@ -54,7 +60,7 @@ fun HomeAfterScheduling(navController: NavHostController) {
             )
             {
                 Text(
-                    text = "Realizar agendamento",
+                    text = "Agendar",
                     style = TextStyle (
                         fontFamily = FontFamily.Serif,
                         fontWeight = FontWeight.Bold,
@@ -63,15 +69,20 @@ fun HomeAfterScheduling(navController: NavHostController) {
                     fontSize = 30.sp,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(60.dp)
+                        .height(70.dp)
                         .width(60.dp)
                         .padding(16.dp),
                 )
             }
         }
+        Box(
+            modifier = Modifier
+                .background(Color(0xFFF214F9D))
+                .align(Alignment.BottomCenter)
 
+        ) {
         Text(
-            text = "Agendamento do seu pet :) ",
+            text = "Agendamento do seu pet! ",
             textAlign = TextAlign.Center,
             style = TextStyle (
                 fontFamily = FontFamily.Serif,
@@ -82,8 +93,8 @@ fun HomeAfterScheduling(navController: NavHostController) {
             modifier = Modifier
                 .height(90.dp)
                 .width(400.dp)
-                .align(Alignment.BottomCenter)
-        )
+          )
+        }
     }
 }
 
