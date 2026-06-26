@@ -16,4 +16,5 @@ Uma aplicativo para agendar medicamentos dos seus pets
 ```
 
 ## Gere um build
-``` ./gradlew build```
+``` text 
+./gradlew build```
