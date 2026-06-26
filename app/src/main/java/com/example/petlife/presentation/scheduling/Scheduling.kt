@@ -1,4 +1,4 @@
-package com.example.petlife.Scheduling
+package com.example.petlife.presentation.scheduling
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.buildSpannedString
 import androidx.navigation.NavHostController
-import com.example.petlife.alarm.AlarmScheduler
+import com.example.petlife.domain.alarm.AlarmScheduler
 
 data class mediCheck(
     val listMedi: String,
@@ -288,19 +288,6 @@ fun Scheduling(navController: NavHostController) {
                                                     color = Color.White,
                                                     fontSize = 30.sp,
                                                 )
-    //                                            IconButton(
-    //                                                onClick = {
-    //                                                    addMedi.removeAt(index)
-    //                                                }
-    //                                            ) {
-    //                                                Icon(
-    //                                                    imageVector = Icons.Default.Delete,
-    //                                                    contentDescription = "Excluir medicamento",
-    //                                                    tint = Color.Red,
-    //                                                    modifier = Modifier
-    //                                                        .size(24.dp)
-    //                                                )
-    //                                            }
                                              }
                                             }
                                         }

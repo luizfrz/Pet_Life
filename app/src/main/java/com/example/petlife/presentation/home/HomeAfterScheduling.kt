@@ -1,4 +1,4 @@
-package com.example.petlife.Scheduling
+package com.example.petlife.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -49,8 +49,8 @@ fun HomeAfterScheduling(navController: NavHostController) {
                     navController.navigate("Scheduling")
                 },
                 modifier = Modifier
-                    .width(300.dp) // Define a largura exata
-                    .height(80.dp) // Define a altura exata)
+                    .width(300.dp) 
+                    .height(80.dp) 
                     .fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(

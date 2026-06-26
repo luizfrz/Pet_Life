@@ -1,4 +1,4 @@
-package com.example.petlife.alarm
+package com.example.petlife.domain.alarm
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

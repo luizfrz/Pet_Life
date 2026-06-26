@@ -41,9 +41,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.petlife.Scheduling.HomeAfterScheduling
-import com.example.petlife.Scheduling.Scheduling
-import com.example.petlife.ui.theme.PetLIfeTheme
+import com.example.petlife.presentation.home.HomeAfterScheduling
+import com.example.petlife.presentation.scheduling.Scheduling
+import com.example.petlife.presentation.theme.PetLIfeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

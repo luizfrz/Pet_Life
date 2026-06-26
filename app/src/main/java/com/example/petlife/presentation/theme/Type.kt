@@ -1,4 +1,4 @@
-package com.example.petlife.ui.theme
+package com.example.petlife.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
