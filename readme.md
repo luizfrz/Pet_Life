@@ -4,13 +4,8 @@ Uma aplicativo para agendar medicamentos dos seus pets
 ## Estrutura de pastas
 ```
 ├── data/                    → Modelos de dados"
-│   └── model/"
-├── domain/                  → Lógica de negócio"
-│   └── alarm/"
-├── presentation/            → Telas (UI)"
-│   ├── home/"
-│   ├── scheduling/"
-│   └── theme/"
+├── domain/                  → Lógica 
+├── presentation/            → Telas (UI)
 └── MainActivity.kt"
 
 ```
