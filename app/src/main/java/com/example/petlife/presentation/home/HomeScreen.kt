@@ -45,9 +45,18 @@ fun HomeScreen(navController: NavHostController) {
         )
         Spacer(modifier = Modifier.height(48.dp))
 
-        HomeButton(text = "Criar um agendamento", color = Color(0xF2D6498)) {
+        HomeButton(text = "Pets", color = Color(0xF2D6498)) {
             navController.navigate("Scheduling")
         }
+        // Spacer(modifier = Modifier.height(48.dp))
+
+        // HomeButton(text = "Cadastro Pet", color = Color(0xF2D6498)) {
+        //     navController.navigate("Scheduling")
+        // }
+        // Spacer(modifier = Modifier.height(48.dp))
+
+        // HomeButton(text = "Criar um agendamento", color = Color(0xF2D6498)) {
+        //     navController.navigate("Scheduling")
     }
 }
 

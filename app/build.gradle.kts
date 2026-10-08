@@ -37,8 +37,6 @@ android {
 
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
-    val nav_version = "2.9.8"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)

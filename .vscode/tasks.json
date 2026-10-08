@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Gradle: assembleDebug", "type": "shell", "command": "./gradlew assembleDebug", "group": { "kind": "build", "isDefault": true }, "problemMatcher": ["$kotlin-compile"] },
+    { "label": "Gradle: installDebug", "type": "shell", "command": "./gradlew installDebug", "problemMatcher": [] },
+    { "label": "Gradle: testDebugUnitTest", "type": "shell", "command": "./gradlew testDebugUnitTest", "group": "test", "problemMatcher": [] },
+    { "label": "Gradle: lint", "type": "shell", "command": "./gradlew lint", "problemMatcher": [] },
+    { "label": "Gradle: clean", "type": "shell", "command": "./gradlew clean", "problemMatcher": [] },
+    { "label": "ADB: devices", "type": "shell", "command": "$ANDROID_HOME/platform-tools/adb devices", "problemMatcher": [] },
+    { "label": "ADB: logcat (app)", "type": "shell", "command": "$ANDROID_HOME/platform-tools/adb logcat --pid=$($ANDROID_HOME/platform-tools/adb shell pidof -s com.example.petlife)", "isBackground": true, "problemMatcher": [] },
+    { "label": "ADB: launch app", "type": "shell", "command": "$ANDROID_HOME/platform-tools/adb shell am start -n com.example.petlife/.MainActivity", "problemMatcher": [] }
+  ]
+}

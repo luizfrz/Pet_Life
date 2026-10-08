@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.petlife.alarm.NotificationHelper
 import com.example.petlife.presentation.home.HomeScreen
 import com.example.petlife.presentation.scheduling.SchedulingScreen
 import com.example.petlife.presentation.splash.SplashScreen
@@ -16,6 +17,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        NotificationHelper.ensureChannel(this)
         setContent {
             PetLIfeTheme {
                 val navController = rememberNavController()

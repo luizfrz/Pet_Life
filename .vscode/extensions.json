@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "jetbrains.kotlin-server",
+    "vscjava.vscode-gradle",
+    "redhat.vscode-xml",
+    "tamasfe.even-better-toml",
+    "editorconfig.editorconfig"
+  ],
+  "unwantedRecommendations": [
+    "mathiasfrohlich.kotlin",
+    "fwcd.kotlin"
+  ]
+}
