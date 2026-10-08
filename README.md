@@ -1,24 +1,13 @@
 # Pet Life
+<div align="center" >
+<img width="100" height="100" alt="image" src="https://github.com/user-attachments/assets/69d196bb-26eb-4e6e-9eda-b24b2492e112" />
+    <img width="100" height="100" alt="image 5" src="https://github.com/user-attachments/assets/82a83e90-20e2-41be-8b0b-14f96345bbf5" />
+ <img width="100" height="100" alt="image" src="https://github.com/user-attachments/assets/da95a922-385a-46ec-b097-934a87140e01" />
+    </div>
+    
+ <strong > Aplicat/ivo Android nativo para agendamento de medicações veterinárias</strong > 
 
-Aplicativo Android nativo para agendamento de medicações veterinárias, escrito em Kotlin com Jetpack Compose.
 
-## Especificações
-
-| Item | Valor |
-|---|---|
-| Application ID / namespace | `com.example.petlife` |
-| `minSdk` / `targetSdk` / `compileSdk` | 24 / 36 / 36 |
-| Versão | `1.0` (`versionCode = 1`) |
-| Linguagem | Kotlin 2.2.10 (plugin `kotlin.compose`) |
-| Android Gradle Plugin | 9.2.1 |
-| Toolchain JDK | 21 (`gradle-daemon-jvm.properties`) |
-| Bytecode alvo | Java 11 |
-| UI toolkit | Jetpack Compose, BOM `2026.02.01`, Material 3 |
-| Navegação | `navigation-compose` 2.9.8 |
-| Activity / Lifecycle | `activity-compose` 1.13.0 / `lifecycle-runtime-ktx` 2.10.0 |
-| Testes | JUnit 4.13.2, AndroidX JUnit 1.3.0, Espresso 3.7.0, Compose UI Test |
-
-Versões centralizadas em `gradle/libs.versions.toml` (version catalog). `isMinifyEnabled = false` no build `release`.
 
 ## Arquitetura
 
@@ -30,7 +19,7 @@ Single-activity (`MainActivity : ComponentActivity`), edge-to-edge habilitado, U
 | `Home` | `HomeScreen` | Entrada principal; navega para `Scheduling` |
 | `Scheduling` | `SchedulingScreen` | `OutlinedTextField` + botão de adição; lista mantida em `mutableStateListOf<String>()` |
 
-### Estrutura de diretórios
+### Estrutura 
 
 ```
 .
@@ -65,22 +54,6 @@ Single-activity (`MainActivity : ComponentActivity`), edge-to-edge habilitado, U
 - Activity: `.MainActivity` (`exported=true`, `MAIN`/`LAUNCHER`)
 - Receiver: `.alarm.MedicationReceiver` (`exported=false`), **classe inexistente** (suprimido com `tools:ignore="MissingClass"`)
 
-## Ambiente de desenvolvimento
-
-**Android Studio** é o ambiente primário. **VS Code** é suportado como ambiente secundário para edição de Kotlin/Compose.
-
-### VS Code
-
-- **Kotlin:** extensão oficial [`jetbrains.kotlin-server`](https://marketplace.visualstudio.com/items?itemName=jetbrains.kotlin-server) (Kotlin LSP, motor do IntelliJ). Importa o projeto via Gradle; o suporte a Android Gradle Plugin é **experimental** e a extensão está em alfa. Pode haver falsos positivos em símbolos gerados (`R`, Compose compiler plugin) que o Android Studio resolve.
-- **Complementares:** `vscjava.vscode-gradle`, `redhat.vscode-xml` (resources/manifest), `tamasfe.even-better-toml` (`libs.versions.toml`), `editorconfig.editorconfig`. Lista em `.vscode/extensions.json`.
-- **Formatação:** `.editorconfig` (Kotlin official style, 120 colunas), aplicada pelo formatter da JetBrains.
-- **Tasks** (`.vscode/tasks.json`): `assembleDebug`, `installDebug`, `testDebugUnitTest`, `lint`, `clean`, `adb devices`, `logcat` filtrado por PID, launch da `MainActivity`.
-- **SDK:** o Gradle lê `sdk.dir` de `local.properties` (não versionado):
-  ```properties
-  sdk.dir=/caminho/para/Android/Sdk
-  ```
-- **VS Code via Flatpak:** o sandbox não possui JDK nem SDK. O `.vscode/settings.json` (local, não versionado) define o terminal integrado como `flatpak-spawn --host bash`, de modo que Gradle e `adb` rodam no host.
-
 ## Build
 
 Requisitos: Android SDK 36 e JDK 21 (o Gradle resolve a toolchain via Foojay), ou Android Studio compatível com AGP 9.x.
@@ -92,3 +65,22 @@ Requisitos: Android SDK 36 e JDK 21 (o Gradle resolve a toolchain via Foojay), o
 ./gradlew connectedDebugAndroidTest   # testes instrumentados
 ./gradlew lint                   # análise estática
 ```
+
+
+## Especificações
+
+| Item | Valor |
+|---|---|
+| Application ID / namespace | `com.example.petlife` |
+| `minSdk` / `targetSdk` / `compileSdk` | 24 / 36 / 36 |
+| Versão | `1.0` (`versionCode = 1`) |
+| Linguagem | Kotlin 2.2.10 (plugin `kotlin.compose`) |
+| Android Gradle Plugin | 9.2.1 |
+| Toolchain JDK | 21 (`gradle-daemon-jvm.properties`) |
+| Bytecode alvo | Java 11 |
+| UI toolkit | Jetpack Compose, BOM `2026.02.01`, Material 3 |
+| Navegação | `navigation-compose` 2.9.8 |
+| Activity / Lifecycle | `activity-compose` 1.13.0 / `lifecycle-runtime-ktx` 2.10.0 |
+| Testes | JUnit 4.13.2, AndroidX JUnit 1.3.0, Espresso 3.7.0, Compose UI Test |
+
+Versões centralizadas em `gradle/libs.versions.toml` (version catalog). `isMinifyEnabled = false` no build `release`.
