@@ -4,83 +4,83 @@
     <img width="100" height="100" alt="image 5" src="https://github.com/user-attachments/assets/82a83e90-20e2-41be-8b0b-14f96345bbf5" />
  <img width="100" height="100" alt="image" src="https://github.com/user-attachments/assets/da95a922-385a-46ec-b097-934a87140e01" />
     </div>
-    
- <strong > Aplicat/ivo Android nativo para agendamento de medicações veterinárias</strong > 
 
-
+ <strong> Aplicativo Android nativo para agendamento de medicações pets</strong >
 
 ## Arquitetura
 
-Single-activity (`MainActivity : ComponentActivity`), edge-to-edge habilitado, UI 100% Compose. O grafo de navegação é declarado em `MainActivity` por um `NavHost` com rotas string-based.
+- **presentation:** composables sem regra de negócio. `SchedulingViewModel` expõe um único `StateFlow<SchedulingUiState>` e recebe eventos por métodos (`onSchedule`, `onToggleTaken`, `onRequestDelete`…). Estado exclusivamente visual (ex.: diálogo do relógio) fica no composable.
+- **domain:** não depende de Android. Define o modelo `Medication`, as interfaces consumidas pelos use cases e os use cases (`AddMedication`, `UpdateMedication`, `RemoveMedication`, `SetMedicationTaken`, `ObserveMedications`, `TriggerReminder`, `RescheduleAll`, `CanScheduleExactAlarms`). Validação e orquestração (salvar → agendar alarme → notificar) vivem em `AddMedicationUseCase`.
+- **data:** `MedicationEntity`, `MedicationDao` e `PetLifeDatabase` (Room); `MedicationRepositoryImpl` converte entidade ↔ modelo de domínio.
+- **alarm:** adaptadores de plataforma para as interfaces do domínio: `AlarmReminderScheduler` (`AlarmManager`) e `SystemMedicationNotifier` (`NotificationManager`), além dos `BroadcastReceiver`s.
+- **di:** `AppContainer` (injeção manual, instanciado em `PetLifeApp`) é o único ponto que conhece as implementações concretas.
+
+### Modelo de dados
+
+Tabela `medications` (Room, versão 1, `exportSchema = false`):
+
+| Coluna | Tipo | Observação |
+|---|---|---|
+| `id` | INTEGER PK | autoGenerate; também é o `requestCode` do `PendingIntent` |
+| `petName` | TEXT | opcional (pode ser vazio) |
+| `medicationName` | TEXT | obrigatório |
+| `hour`, `minute` | INTEGER | horário diário do alarme |
+| `taken` | INTEGER (bool) | dose do dia marcada pelo usuário |
+
+### Estrutura
+
+```
+app/src/main/java/com/example/petlife/
+├── PetLifeApp.kt                    # Application: cria o AppContainer e o canal de notificação
+├── MainActivity.kt                  # NavHost (Splash → Home → Scheduling)
+├── di/AppContainer.kt
+├── domain/
+│   ├── model/Medication.kt
+│   ├── repository/MedicationRepository.kt
+│   ├── scheduler/ReminderScheduler.kt
+│   ├── notification/MedicationNotifier.kt
+│   └── usecase/                     # Add, Update, Remove, SetTaken, Observe, TriggerReminder, RescheduleAll, CanScheduleExact
+├── data/
+│   ├── local/                       # MedicationEntity, MedicationDao, PetLifeDatabase
+│   └── repository/MedicationRepositoryImpl.kt
+├── alarm/                           # AlarmReminderScheduler, SystemMedicationNotifier, MedicationReceiver, BootReceiver
+└── presentation/
+    ├── splash/ home/                # SplashScreen, HomeScreen
+    ├── scheduling/                  # SchedulingScreen, SchedulingViewModel, SchedulingUiState
+    └── theme/                       # Color, Type, Theme
+app/src/test/                        # testes unitários dos use cases (fakes das interfaces do domínio)
+```
+
+### Navegação
 
 | Rota | Composable | Comportamento |
 |---|---|---|
-| `Splash` (start) | `SplashScreen` | Fade-in (`tween` 1200 ms) e `delay(2500)` em `LaunchedEffect`; navega para `Home` com `popUpTo("Splash") { inclusive = true }`, removendo a splash do back stack |
-| `Home` | `HomeScreen` | Entrada principal; navega para `Scheduling` |
-| `Scheduling` | `SchedulingScreen` | `OutlinedTextField` + botão de adição; lista mantida em `mutableStateListOf<String>()` |
-
-### Estrutura 
-
-```
-.
-├── app/
-│   ├── build.gradle.kts
-│   ├── proguard-rules.pro
-│   └── src/main/
-│       ├── AndroidManifest.xml
-│       ├── java/com/example/petlife/
-│       │   ├── MainActivity.kt          # NavHost / grafo de rotas
-│       │   └── presentation/
-│       │       ├── splash/              # SplashScreen
-│       │       ├── home/                # HomeScreen
-│       │       ├── scheduling/          # SchedulingScreen
-│       │       └── theme/               # Color.kt, Type.kt, Theme.kt
-│       └── res/                         # drawables, mipmaps, values, xml
-├── gradle/
-│   ├── libs.versions.toml               # version catalog
-│   └── gradle-daemon-jvm.properties     # toolchain JDK 21
-├── build.gradle.kts
-├── settings.gradle.kts
-└── gradle.properties
-```
-
-### Tema
-
-`PetLIfeTheme` (Material 3) usa `dynamicColorScheme` em Android 12+ (API 31, `Build.VERSION_CODES.S`) e faz fallback para `lightColorScheme`/`darkColorScheme` estáticos conforme `isSystemInDarkTheme()`. As telas ainda definem a cor de marca `#2D6498` diretamente nos composables, sem passar pelo `ColorScheme`.
+| `Splash` (start) | `SplashScreen` | Fade-in de 1200 ms e `delay(2500)`; vai para `Home` removendo a splash do back stack |
+| `Home` | `HomeScreen` | Entrada principal |
+| `Scheduling` | `SchedulingScreen` | Cadastro, edição, listagem, marcação de "tomou" e exclusão (com confirmação); a seta e o botão "Voltar" retornam à `Home` |
 
 ### Manifest
 
-- Permissão: `POST_NOTIFICATIONS`
-- Activity: `.MainActivity` (`exported=true`, `MAIN`/`LAUNCHER`)
-- Receiver: `.alarm.MedicationReceiver` (`exported=false`), **classe inexistente** (suprimido com `tools:ignore="MissingClass"`)
+- Permissões: `POST_NOTIFICATIONS` (solicitada em runtime na tela de agendamento), `SCHEDULE_EXACT_ALARM`, `RECEIVE_BOOT_COMPLETED`
+- `PetLifeApp` como `Application`; `MedicationReceiver` (`exported=false`); `BootReceiver` (`exported=true`, apenas ações do sistema)
+- Sem permissão de alarme exato (Android 12+), o app usa `setAndAllowWhileIdle` (pode atrasar alguns minutos) e exibe aviso com atalho para a configuração.
+
+
+### Passo a passo do agendamento
+
+1. A tela envia `onSchedule()` ao `SchedulingViewModel`.
+2. `AddMedicationUseCase` valida (nome não vazio, horário 00:00–23:59), grava no Room, agenda o alarme e dispara a notificação "Você tem um medicamento agendado".
+3. No horário, o `AlarmManager` aciona `MedicationReceiver`, que (via `goAsync` + coroutine) executa `TriggerReminderUseCase`: desmarca o "já tomou", exibe a notificação do lembrete e agenda o disparo do dia seguinte (alarmes exatos não se repetem).
+4. **Alteração:** "Editar" no box do medicamento carrega nome, pet e horário no formulário (`onEdit`); "Salvar" aciona `UpdateMedicationUseCase`, que valida, atualiza a linha no Room, desmarca o "já tomou" (nova dose) e reagenda o alarme com o mesmo id (o `PendingIntent` com o mesmo `requestCode` substitui o disparo anterior, sem duplicar). "Cancelar edição" descarta o formulário; excluir o item em edição também o limpa.
+5. `BootReceiver` reagenda tudo após reboot, atualização do app e mudança de hora/fuso/permissão de alarme exato.
 
 ## Build
 
-Requisitos: Android SDK 36 e JDK 21 (o Gradle resolve a toolchain via Foojay), ou Android Studio compatível com AGP 9.x.
-
 ```bash
-./gradlew assembleDebug          # APK: app/build/outputs/apk/debug/
-./gradlew installDebug           # instala no dispositivo/emulador via adb
-./gradlew testDebugUnitTest      # testes unitários (JVM)
+./gradlew assembleDebug               # APK: app/build/outputs/apk/debug/
+./gradlew installDebug                # instala no dispositivo/emulador via adb
+./gradlew testDebugUnitTest           # testes unitários (JVM)
 ./gradlew connectedDebugAndroidTest   # testes instrumentados
-./gradlew lint                   # análise estática
+./gradlew lintDebug                   # análise estática
 ```
-
-
-## Especificações
-
-| Item | Valor |
-|---|---|
-| Application ID / namespace | `com.example.petlife` |
-| `minSdk` / `targetSdk` / `compileSdk` | 24 / 36 / 36 |
-| Versão | `1.0` (`versionCode = 1`) |
-| Linguagem | Kotlin 2.2.10 (plugin `kotlin.compose`) |
-| Android Gradle Plugin | 9.2.1 |
-| Toolchain JDK | 21 (`gradle-daemon-jvm.properties`) |
-| Bytecode alvo | Java 11 |
-| UI toolkit | Jetpack Compose, BOM `2026.02.01`, Material 3 |
-| Navegação | `navigation-compose` 2.9.8 |
-| Activity / Lifecycle | `activity-compose` 1.13.0 / `lifecycle-runtime-ktx` 2.10.0 |
-| Testes | JUnit 4.13.2, AndroidX JUnit 1.3.0, Espresso 3.7.0, Compose UI Test |
-
-Versões centralizadas em `gradle/libs.versions.toml` (version catalog). `isMinifyEnabled = false` no build `release`.
+Requisitos: Android SDK 36 e JDK 21 (o Gradle resolve a toolchain via Foojay), ou Android Studio compatível com AGP 9.x.

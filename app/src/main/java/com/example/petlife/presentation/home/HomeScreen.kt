@@ -45,7 +45,7 @@ fun HomeScreen(navController: NavHostController) {
         )
         Spacer(modifier = Modifier.height(48.dp))
 
-        HomeButton(text = "Pets", color = Color(0xF2D6498)) {
+        HomeButton(text = "Criar um agendamento", color = Color(0xF2D6498)) {
             navController.navigate("Scheduling")
         }
         // Spacer(modifier = Modifier.height(48.dp))
@@ -62,22 +62,25 @@ fun HomeScreen(navController: NavHostController) {
 
 @Composable
 private fun HomeButton(text: String, color: Color, onClick: () -> Unit) {
+    Text(
+        text = "Agende com facilidade medicamento do seu pet",
+    )
     Button(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF000000))
+            .background(Color(0xFFFFFFFF))
             .height(56.dp),
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(containerColor = color)
     ) {
         Text(
-            text = text,
+            text = "Agendar medicamento",
             style = TextStyle(
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
-                color = Color.White
+                color = Color.Black
             )
         )
     }
