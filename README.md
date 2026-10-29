@@ -1,12 +1,10 @@
 # Pet Life
 <div align="center" >
-    <img width="300" height="200" alt="image 5" src="https://github.com/user-attachments/assets/82a83e90-20e2-41be-8b0b-14f96345bbf5" />
+    <img width="200" height="200" alt="image 5" src="https://github.com/user-attachments/assets/82a83e90-20e2-41be-8b0b-14f96345bbf5" />
     </div>
 
  <strong> Aplicativo Android nativo para agendamento de medicações pets </strong >
-
-## Stack
-
+ 
 <div align="center">
   <img src="https://img.shields.io/badge/Kotlin-2.2.10-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
   <img src="https://img.shields.io/badge/Jetpack_Compose-BOM_2026.02.01-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white" alt="Jetpack Compose" />
