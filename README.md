@@ -1,11 +1,25 @@
 # Pet Life
 <div align="center" >
-<img width="100" height="100" alt="image" src="https://github.com/user-attachments/assets/69d196bb-26eb-4e6e-9eda-b24b2492e112" />
-    <img width="100" height="100" alt="image 5" src="https://github.com/user-attachments/assets/82a83e90-20e2-41be-8b0b-14f96345bbf5" />
- <img width="100" height="100" alt="image" src="https://github.com/user-attachments/assets/da95a922-385a-46ec-b097-934a87140e01" />
+    <img width="300" height="200" alt="image 5" src="https://github.com/user-attachments/assets/82a83e90-20e2-41be-8b0b-14f96345bbf5" />
     </div>
 
- <strong> Aplicativo Android nativo para agendamento de medicações pets</strong >
+ <strong> Aplicativo Android nativo para agendamento de medicações pets </strong >
+
+## Stack
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Kotlin-2.2.10-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
+  <img src="https://img.shields.io/badge/Jetpack_Compose-BOM_2026.02.01-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white" alt="Jetpack Compose" />
+  <img src="https://img.shields.io/badge/Material-3-6750A4?style=for-the-badge&logo=materialdesign&logoColor=white" alt="Material 3" />
+  <img src="https://img.shields.io/badge/Navigation_Compose-2.9.8-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Navigation Compose" />
+  <img src="https://img.shields.io/badge/Room-2.8.5_(SQLite)-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="Room" />
+  <img src="https://img.shields.io/badge/Coroutines_%26_Flow-Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Coroutines e Flow" />
+  <img src="https://img.shields.io/badge/MVVM-Clean_Architecture-FF6F00?style=for-the-badge&logo=android&logoColor=white" alt="MVVM" />
+  <img src="https://img.shields.io/badge/AlarmManager-Notifications-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="AlarmManager" />
+  <img src="https://img.shields.io/badge/Gradle-AGP_9.2.1-02303A?style=for-the-badge&logo=gradle&logoColor=white" alt="Gradle" />
+  <img src="https://img.shields.io/badge/Testes-JUnit_4_%26_Espresso-25A162?style=for-the-badge&logo=junit5&logoColor=white" alt="Testes" />
+  <img src="https://img.shields.io/badge/Android_Studio-JDK_21-3DDC84?style=for-the-badge&logo=androidstudio&logoColor=white" alt="Android Studio" />
+</div>
 
 ## Arquitetura
 
