@@ -1,87 +1,58 @@
 package com.example.petlife.presentation.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.petlife.R
+import com.example.petlife.presentation.components.PetButton
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF000000))
-            .padding(24.dp),
+            .background(Color.White)
+            .systemBarsPadding()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 40.dp, vertical = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "Pet Life",
-            style = TextStyle(
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Bold,
-                fontSize = 36.sp,
-                color = Color.White
-            )
+        Image(
+            painterResource(R.drawable.pet_logo_home),
+            contentDescription = "Pet Life",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.fillMaxWidth().height(160.dp)
         )
-        Spacer(modifier = Modifier.height(48.dp))
-
-        HomeButton(text = "Criar um agendamento", color = Color(0xF2D6498)) {
-            navController.navigate("Scheduling")
+        Text(
+            "Agende com facilidade medicamento do seu pet",
+            style = TextStyle(color = Color(0xFF010101), fontSize = 22.sp, textAlign = TextAlign.Center),
+            modifier = Modifier.fillMaxWidth().padding(top = 40.dp, bottom = 32.dp)
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            PetButton("Pets", { navController.navigate("PetList") })
+            PetButton("Cadastrar pet", { navController.navigate("PetRegister") })
+            PetButton("Criar Agendamento", { navController.navigate("Scheduling") })
         }
-        // Spacer(modifier = Modifier.height(48.dp))
-
-        // HomeButton(text = "Cadastro Pet", color = Color(0xF2D6498)) {
-        //     navController.navigate("Scheduling")
-        // }
-        // Spacer(modifier = Modifier.height(48.dp))
-
-        // HomeButton(text = "Criar um agendamento", color = Color(0xF2D6498)) {
-        //     navController.navigate("Scheduling")
-    }
-}
-
-@Composable
-private fun HomeButton(text: String, color: Color, onClick: () -> Unit) {
-    Text(
-        text = "Agende com facilidade medicamento do seu pet",
-    )
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFFFFFFF))
-            .height(56.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = color)
-    ) {
-        Text(
-            text = "Agendar medicamento",
-            style = TextStyle(
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-        )
     }
 }

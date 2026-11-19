@@ -19,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -61,29 +63,13 @@ fun SplashScreen(navController: NavHostController) {
             modifier = Modifier.alpha(alpha)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.logo_pet),
+                painter = painterResource(id = R.drawable.pet_splash),
                 contentDescription = "Logo",
-                modifier = Modifier.size(120.dp)
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(width = 227.dp, height = 283.dp).clip(RoundedCornerShape(36.dp))
             )
-            Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "PetLife",
-                style = TextStyle(
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 40.sp,
-                    color = Color.White
-                )
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Cuidando do seu pet",
-                style = TextStyle(
-                    fontFamily = FontFamily.Serif,
-                    fontSize = 16.sp,
-                    color = Color.White.copy(alpha = 0.8f)
-                )
-            )
+            Spacer(modifier = Modifier.height(68.dp))
+            Text(text = "Pet Life", style = TextStyle(fontSize = 32.sp, color = Color.White))
         }
     }
 }

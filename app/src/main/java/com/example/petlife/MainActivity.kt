@@ -8,6 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.petlife.presentation.home.HomeScreen
+import com.example.petlife.presentation.pets.PetListScreen
+import com.example.petlife.presentation.pets.PetRegisterScreen
 import com.example.petlife.presentation.scheduling.SchedulingScreen
 import com.example.petlife.presentation.splash.SplashScreen
 import com.example.petlife.presentation.theme.PetLIfeTheme
@@ -25,6 +27,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("Splash") { SplashScreen(navController) }
                     composable("Home") { HomeScreen(navController) }
+                    composable("PetList") { PetListScreen(navController) }
+                    composable("PetRegister") { PetRegisterScreen(navController) }
                     composable("Scheduling") { SchedulingScreen(navController) }
                 }
             }

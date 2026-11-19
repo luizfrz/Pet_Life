@@ -6,7 +6,22 @@ import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import com.example.petlife.R
+import com.example.petlife.presentation.components.BackButton
+import com.example.petlife.presentation.components.PetBlack
+import com.example.petlife.presentation.components.PetField
+import com.example.petlife.presentation.components.PetGray
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,7 +72,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -72,7 +89,7 @@ import com.example.petlife.PetLifeApp
 import com.example.petlife.alarm.SystemMedicationNotifier
 
 private val ScreenBackground = Color.White
-private val BoxColor = Color.Black
+private val BoxColor = PetBlack
 private val OnBox = Color.White
 
 private const val CLOCK_PATH =
@@ -114,78 +131,50 @@ fun SchedulingScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ScreenBackground)
-            .padding(24.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = goHome) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Voltar para a tela inicial",
-                    tint = Color.Black,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
+    Column(modifier = Modifier.fillMaxSize().background(ScreenBackground).statusBarsPadding()) {
+        BackButton(goHome, Modifier.padding(start = 12.dp, top = 8.dp))
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(23.dp))
+                .background(PetGray)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             Text(
-                text = "Agendamentos do seu pet",
-                style = TextStyle(
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 28.sp,
-                    color = Color.Black
-                )
+                "Agende um horario do medicamento",
+                style = TextStyle(color = Color.Black, fontSize = 22.sp),
+                modifier = Modifier.fillMaxWidth()
             )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        if (!state.exactAlarmAllowed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3CD))
-            ) {
-                Column(modifier = Modifier.padding(12.dp)) {
-                    Text(
-                        "Sem permissão de alarme exato: o aviso pode atrasar alguns minutos.",
-                        style = TextStyle(color = Color.Black, fontSize = 14.sp)
-                    )
-                    TextButton(onClick = {
+            if (!state.exactAlarmAllowed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                Text(
+                    "Sem permissão de alarme exato: o aviso pode atrasar. Toque para permitir.",
+                    style = TextStyle(color = Color(0xFFB00020), fontSize = 14.sp),
+                    modifier = Modifier.clickable {
                         context.startActivity(
                             Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
                                 .setData(android.net.Uri.parse("package:${context.packageName}"))
                         )
-                    }) { Text("Permitir", color = Color.Black) }
-                }
+                    }
+                )
             }
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            FormField(state.petName, "Nome do pet (opcional)", viewModel::onPetNameChange)
-            FormField(state.medicationName, "Medicamento", viewModel::onMedicationNameChange)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(
-                    onClick = { showTimePicker = true },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = BoxColor, contentColor = OnBox)
-                ) {
-                    Icon(
-                        ClockIcon,
-                        contentDescription = "Definir alarme",
-                        tint = OnBox,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("%02d:%02d".format(state.hour, state.minute))
+            Text("Medicamento", style = TextStyle(color = Color.Black, fontSize = 22.sp))
+            PetField(state.medicationName, viewModel::onMedicationNameChange)
+            Text("Alarme", style = TextStyle(color = Color.Black, fontSize = 22.sp))
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Image(
+                    painterResource(R.drawable.ic_clock_big),
+                    contentDescription = "Definir alarme",
+                    modifier = Modifier.size(79.dp).clip(RoundedCornerShape(13.dp)).clickable { showTimePicker = true }
+                )
+                Text(
+                    "%02d:%02d".format(state.hour, state.minute),
+                    style = TextStyle(color = Color.Black, fontSize = 32.sp, fontWeight = FontWeight.Bold)
+                )
+                Spacer(Modifier.weight(1f))
+                if (state.editingMedicationId != null) {
+                    TextButton(onClick = viewModel::onCancelEdit) { Text("Cancelar", color = Color.Black) }
                 }
                 Button(
                     onClick = viewModel::onSchedule,
@@ -193,89 +182,70 @@ fun SchedulingScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = BoxColor, contentColor = OnBox)
                 ) { Text(if (state.editingMedicationId != null) "Salvar" else "Agendar") }
             }
+            state.errorMessage?.let { Text(it, style = TextStyle(color = Color(0xFFB00020), fontSize = 14.sp)) }
         }
-
-        if (state.editingMedicationId != null) {
-            TextButton(onClick = viewModel::onCancelEdit) { Text("Cancelar edição", color = Color.Black) }
-        }
-
-        state.errorMessage?.let {
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(it, style = TextStyle(color = Color(0xFFB00020), fontSize = 14.sp))
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(topStart = 47.dp, topEnd = 47.dp))
+                .background(BoxColor),
+            contentPadding = PaddingValues(start = 16.dp, top = 24.dp, end = 16.dp,
+                bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(state.medications, key = { it.id }) { item ->
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = BoxColor)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(start = 4.dp, top = 8.dp, bottom = 8.dp, end = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = item.taken,
-                            onCheckedChange = { viewModel.onToggleTaken(item, it) },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = OnBox,
-                                checkmarkColor = BoxColor,
-                                uncheckedColor = OnBox
-                            )
-                        )
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                item.medicationName,
-                                style = TextStyle(
-                                    color = OnBox,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textDecoration = if (item.taken) TextDecoration.LineThrough else TextDecoration.None
-                                )
-                            )
-                            if (item.petName.isNotBlank()) {
-                                Text(item.petName, style = TextStyle(color = Color.LightGray, fontSize = 14.sp))
-                            }
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    ClockIcon,
-                                    contentDescription = "Alarme definido",
-                                    tint = OnBox,
-                                    modifier = Modifier.size(18.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    "${item.timeLabel} todo dia",
-                                    style = TextStyle(color = OnBox, fontSize = 14.sp)
-                                )
-                            }
-                        }
-                        Column(horizontalAlignment = Alignment.End) {
-                            TextButton(onClick = { viewModel.onEdit(item) }) { Text("Editar", color = OnBox) }
-                            TextButton(onClick = { viewModel.onRequestDelete(item) }) {
-                                Text("Excluir", color = Color(0xFFE57373))
-                            }
-                        }
-                    }
+            if (state.medications.isEmpty()) {
+                item {
+                    Text(
+                        "Nenhum medicamento agendado",
+                        style = TextStyle(color = Color.White, fontSize = 18.sp),
+                        modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = goHome,
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = BoxColor, contentColor = OnBox)
-        ) {
-            Text("Voltar", style = TextStyle(fontWeight = FontWeight.Bold))
+            items(state.medications, key = { it.id }) { item ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color.White)
+                        .clickable { viewModel.onEdit(item) }
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        item.medicationName,
+                        modifier = Modifier.weight(1f),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = TextStyle(
+                            color = Color.Black,
+                            fontSize = 22.sp,
+                            textDecoration = if (item.taken) TextDecoration.LineThrough else TextDecoration.None
+                        )
+                    )
+                    Text(item.timeLabel, style = TextStyle(color = Color.Black, fontSize = 22.sp))
+                    Image(
+                        painterResource(R.drawable.ic_check),
+                        contentDescription = "Marcar como tomado",
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(40.dp)
+                            .alpha(if (item.taken) 1f else 0.3f)
+                            .clickable { viewModel.onToggleTaken(item, !item.taken) }
+                    )
+                    Image(
+                        painterResource(R.drawable.ic_trash),
+                        contentDescription = "Excluir",
+                        modifier = Modifier
+                            .padding(start = 4.dp)
+                            .size(44.dp)
+                            .clickable { viewModel.onRequestDelete(item) }
+                    )
+                }
+            }
         }
     }
 
@@ -315,29 +285,6 @@ fun SchedulingScreen(
             }
         )
     }
-}
-
-@Composable
-private fun FormField(value: String, label: String, onChange: (String) -> Unit) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onChange,
-        label = { Text(label) },
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = BoxColor,
-            unfocusedBorderColor = BoxColor,
-            focusedTextColor = OnBox,
-            unfocusedTextColor = OnBox,
-            cursorColor = OnBox,
-            focusedLabelColor = Color.LightGray,
-            unfocusedLabelColor = Color.LightGray,
-            focusedContainerColor = BoxColor,
-            unfocusedContainerColor = BoxColor
-        ),
-        singleLine = true
-    )
 }
 
 @Composable
